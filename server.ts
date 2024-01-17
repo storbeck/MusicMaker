@@ -9,10 +9,18 @@ const BEATS_PER_MINUTE = 120;
 const wss = new WebSocketServer({ port: 8080 });
 const openai = new OpenAI();
 
+/**
+ * Delays the execution for the specified number of milliseconds.
+ * @param ms - The number of milliseconds to delay.
+ * @returns A promise that resolves after the specified delay.
+ */
 function delay(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+/**
+ * Represents the data structure for a song.
+ */
 interface SongData {
   hihat: string[];
   kick: string[];
@@ -23,8 +31,15 @@ interface SongData {
   piano: string[];
 }
 
+/**
+ * Generates a detailed 30-second loopable hip hop beat using AI.
+ * The beat has a structured musical arrangement suitable for a full song,
+ * with varying elements and a clear rhythm.
+ * 
+ * @returns A Promise that resolves to a string representing the generated beat.
+ */
 async function generateMusic(): Promise<string> {
-  
+   // AI code for generating music
     const chatCompletion = await openai.chat.completions.create({
       messages: [
         { 
@@ -52,11 +67,21 @@ async function generateMusic(): Promise<string> {
   return song as string;
 }
 
+/**
+ * Reads a music file from the specified file path and returns the parsed song data.
+ * @param filePath - The path to the music file.
+ * @returns The parsed song data.
+ */
 function readMusicFile(filePath: string): SongData {
   const fileContent = fs.readFileSync(filePath, 'utf8');
   return JSON.parse(fileContent) as SongData;
 }
 
+/**
+ * Plays a song by sending instrument notes to a WebSocket connection.
+ * @param ws The WebSocket connection to send the notes to.
+ * @param songData The data representing the song and its instruments.
+ */
 function playSong(ws: WebSocket, songData: SongData) {
   (async () => {
     while (true) {
