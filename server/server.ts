@@ -4,7 +4,7 @@ import fs from 'fs';
 import { config } from 'dotenv';
 
 config();
-const BEATS_PER_MINUTE = 120;
+const BEATS_PER_MINUTE = 60;
 
 const wss = new WebSocketServer({ port: 8080 });
 const openai = new OpenAI();
@@ -96,6 +96,7 @@ function playSong(ws: WebSocket, songData: SongData) {
           bundle[instrument] = note;
         }
 
+        process.stdout.write(`Sending bundle: ${JSON.stringify(bundle)}\n`);
         ws.send(JSON.stringify(bundle));
         const delayMs = Math.floor((60 / BEATS_PER_MINUTE) * 1000);
         await delay(delayMs);

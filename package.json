@@ -1,23 +1,14 @@
 {
   "name": "music-maker",
   "version": "1.0.0",
-  "description": "",
+  "description": "## Overview",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:server": "cd server && ts-node server.ts --file songs/sample5.json",
+    "start:client": "cd client && npm run dev",
+    "start:both": "concurrently \"npm run start:server\" \"npm run start:client\""
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^1.6.5",
-    "dotenv": "^16.3.1",
-    "easymidi": "^3.1.0",
-    "noteplayer": "^1.2.1",
-    "openai": "^4.24.7",
-    "ws": "^8.16.0"
-  },
-  "devDependencies": {
-    "@types/ws": "^8.5.10"
-  }
+  "license": "ISC"
 }

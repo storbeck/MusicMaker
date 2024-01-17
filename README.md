@@ -1,65 +1,105 @@
-# README for Music Maker Application
+# Music Maker Application
 
-## Overview
+The Music Maker Application is a Node.js and WebSocket-based application that generates and plays modern hip-hop beats. It utilizes OpenAI's GPT-3.5 model for music generation and Tone.js for real-time music playback.
 
-Music Maker is a Node.js and WebSocket-based application that generates and plays a modern hip-hop beat using OpenAI's GPT-3.5 model. The server generates music in JSON format, which can either be saved to a file or sent to a WebSocket client for playback. The client uses Tone.js to synthesize and play the music in real-time.
+## Getting Started
 
-## Server (`server.ts`)
+Follow these steps to set up and run the Music Maker Application:
 
-### Dependencies
+### Prerequisites
 
-- Node.js
-- `ws`: WebSocket library
-- `openai`: OpenAI SDK
-- `dotenv`: To manage environment variables
+- Node.js installed on your machine.
 
-### Setup
+### Installation
 
-1. Install dependencies: `npm install ws openai dotenv`.
-2. Set your OpenAI API key in a `.env` file: `OPENAI_API_KEY=your_api_key_here`.
+1. Clone the repository to your local machine:
 
-### Usage
+   ```bash
+   git clone https://github.com/storbeck/MusicMaker.git
+   ```
 
-- Generate music and save to a file: `ts-node server.ts --generate --save sample/musicfile.json`.
-- Generate music and output to stdout: `ts-node server.ts --generate`.
-- Play a music file: `ts-node server.ts --file path/to/musicfile.json`.
+2. Navigate to the project directory:
 
-### Functionality
+   ```bash
+   cd <project_directory>
+   ```
 
-- `generateMusic`: Uses OpenAI's GPT-3.5 model to generate a hip-hop beat in JSON format.
-- `readMusicFile`: Reads a music file and parses it as JSON.
-- `playSong`: Sends the generated music to connected WebSocket clients and plays it in a loop.
+3. Install server dependencies:
 
-## Client (`client.html`)
+   ```bash
+   cd server
+   npm install
+   ```
 
-### Dependencies
+4. Install client dependencies:
 
-- Web browser with JavaScript support
-- Tone.js (loaded via CDN in the HTML)
+   ```bash
+   cd client
+   npm install
+   ```
 
-### Setup
+### Configuration
 
-1. Open `client.html` in a web browser.
-2. Click the "Play" button to start the audio context.
+1. Set your OpenAI API key by creating a `.env` file in the server directory:
 
-### Usage
+   ```plaintext
+   OPENAI_API_KEY=your_api_key_here
+   ```
 
-- Connects to the WebSocket server at `ws://localhost:8080`.
-- Receives music data from the server and plays it using Tone.js synthesizers.
+## Running the Application
 
-### Functionality
+You can run the server and client separately or together.
 
-- Synthesizer functions (`createKick`, `createSnare`, etc.) to create instruments.
-- `initializeAudio`: Sets up WebSocket connection and handles incoming music data.
-- `playInstrument`: Plays the received note on the corresponding instrument.
+### Running the Server
 
-### UI Elements
+To start the server for generating and playing music, run the following commands from the server directory:
 
-- "Play" button: Starts the audio context.
-- "Pause" button: Pauses the music playback.
+- Generate music and save to a file:
+
+  ```bash
+  npm run generate-music --save songs/sample5.json
+  ```
+
+- Generate music and output to stdout:
+
+  ```bash
+  npm run generate-music 
+  ```
+
+- Play a music file:
+
+  ```bash
+  npm run play-music example_song2.json
+  ```
+
+### Running the Client
+
+To start the client for real-time music playback, run the following commands from the client directory:
+
+- Start the local development server
+
+  ```bash
+  npm run dev
+  ```
+
+### Running Both Server and Client Concurrently
+
+To run both the server and client concurrently, use the following command from the project directory:
+
+```bash
+npm run start:both
+```
+
+This will start both the server and client, allowing you to generate and play music in real-time.
+
+## Functionality
+
+- The server uses OpenAI's GPT-3.5 model to generate hip-hop beats in JSON format.
+- The client connects to the WebSocket server and plays the received music using Tone.js synthesizers.
+- You can customize the instruments and music generation by modifying the server code.
 
 ## Notes
 
-- The application requires a WebSocket connection between the server and client.
+- The Music Maker Application requires a WebSocket connection between the server and client.
 - Music generation is based on OpenAI's GPT-3.5 model and may vary in musicality.
 - The client-side script uses Tone.js to synthesize and play music in real-time.
