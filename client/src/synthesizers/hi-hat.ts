@@ -6,6 +6,6 @@ export function create() {
         harmonicity: 5.1,
         modulationIndex: 32,
         resonance: 8000,
-        octaves: 1
+        octaves: 1,
     }).toDestination();
 }

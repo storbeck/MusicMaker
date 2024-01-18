@@ -44,19 +44,19 @@ async function generateMusic(): Promise<string> {
       messages: [
         { 
           role: 'system', 
-          content: `You are an AI musician specialized in hip hop music. Create a detailed 30-second loopable hip hop beat. The beat should have a structured musical arrangement suitable for a full song, with varying elements and a clear rhythm. Use the following JSON format for the beat, and provide specific notes for each instrument in a sequence that is musically coherent and rich:
+          content: `You are an AI musician specialized in hip hop music. Create a detailed 30-second loopable hip hop beat with chords. The beat should have a structured musical arrangement suitable for a full song, with varying elements and a clear rhythm. Use the following JSON format for the beat, providing specific chords for each instrument in a sequence that is musically coherent and rich:
     
           {
-            "hihat": ["Note1", "Note2", "..."], // Replace Note1, Note2, etc., with actual notes and include silences as empty strings
-            "kick": ["Note1", "", "Note3", "..."],
-            "snare": ["", "Note2", "", "..."],
-            "bass_drum": ["Note1", "", "", "..."],
-            "guitar": ["Note3", "Note4", "", "..."],
-            "bass_guitar": ["", "Note2", "Note4", "..."],
-            "piano": ["Note5", "Note6", "", "..."]
+            "guitar": ["Cmaj", "Gmaj", "Am", "Fmaj"], // Example chord progression
+            "piano": ["Dmin", "Amin", "Emin", "Gmaj"],
+            "hihat": ["Chord1", "Chord2", "..."], // Replace Chrod1, Chord2, etc., with actual chords as collection of notes and include silences as empty strings
+            "kick": ["Chord1", "", "Chord3", "..."],
+            "snare": ["", "Chord2", "", "..."],
+            "bass_drum": ["Chord1", "", "", "..."],
+            "bass_guitar": ["", "Chord2", "Chord4", "..."],
           }
     
-          Ensure each array represents the notes played by that instrument in sequence for the entire 60 seconds, with empty strings indicating pauses. The beat should be diverse, rhythmic, suitable for a modern hip hop track, and easy to loop seamlessly`
+          Each array represents the chords played by that instrument in sequence for the entire 30 seconds, with empty strings indicating pauses. The beat should be diverse, rhythmic, suitable for a modern hip hop track, and easy to loop seamlessly.`
         }
       ],
       model: 'gpt-3.5-turbo',
@@ -88,17 +88,17 @@ function playSong(ws: WebSocket, songData: SongData) {
       const maxLength = Math.max(...Object.values(songData).map(notes => notes.length));
 
       for (let i = 0; i < maxLength; i++) {
-        let bundle: { [key: string]: string } = {};  // Updated line
+        let bundle: { [key: string]: string } = {};
 
         for (const instrument in songData) {
-          const notes = songData[instrument as keyof SongData];
-          const note = notes[i] || '';
-          bundle[instrument] = note;
+          const chords = songData[instrument as keyof SongData];
+          const chord = chords[i] || '';
+          bundle[instrument] = chord;
         }
 
         process.stdout.write(`Sending bundle: ${JSON.stringify(bundle)}\n`);
         ws.send(JSON.stringify(bundle));
-        const delayMs = Math.floor((60 / BEATS_PER_MINUTE) * 1000);
+        const delayMs = Math.floor((60 / BEATS_PER_MINUTE) * 1000); // Removed * 2
         await delay(delayMs);
       }
     }
